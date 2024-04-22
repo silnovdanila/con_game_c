@@ -13,7 +13,7 @@ FILE* f;
 struct Object {
 	int x;
 	int y;
-} boxes[6], ends[6];
+} boxes[6];
 
 int dai_chislo(int a, int b) { // Функция ввода числа
 	int k, f = 1;
@@ -45,7 +45,7 @@ int init_map(int map[map_size][map_size], int level_num, int* m, int* n, int* no
 		if (ch == '9') map[i][j] = 9;
 		else if (ch == 's') { map[i][j] = 0; *(now_x) = j; *(now_y) = i; }
 		else if (ch == 'k') { map[i][j] = 0; boxes[*(box)] = Object{ j, i }; *(box) = *(box) + 1; }
-		else if (ch == 'o') { map[i][j] = 2;  ends[*(end)] = Object{ j, i }; *(end) = *(end) + 1; }
+		else if (ch == 'o') { map[i][j] = 2; *(end) = *(end) + 1; }
 		else if (ch == ' ') map[i][j] = 0;
 		else if (ch == '\n') { i++; j = -1;}
 		j++;
@@ -94,10 +94,11 @@ int main() {
 	setlocale(LC_ALL, "Russian");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	int map[map_size][map_size], x, m, n, i, j, now_x, now_y, box, end;
+	int map[map_size][map_size], x, m, n, i, j, now_x, now_y, box, end, k;
 	char c;
 	for (i = 0; i < levels; i++) {
 		x = init_map(map, i + 1, &m, &n, &now_x, &now_y, &box, &end);
+		k = 0;
 		if (x != -1) {
 			while (1) {
 				print_map(map, m, n, now_x, now_y, box);
@@ -105,6 +106,7 @@ int main() {
 				if (c == 'w') { // w
 					if (is_box(now_y - 1, now_x, box)) {
 						if (map[now_y - 2][now_x] == 0) {
+							if (map[now_y - 1][now_x] == 2) k--;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x && boxes[j].y == now_y - 1) {
 									boxes[j].y = boxes[j].y - 1;
@@ -113,7 +115,14 @@ int main() {
 							}
 						}
 						else if (map[now_y - 2][now_x] == 2) {
-							break;
+							k++;
+							if (k == end) break;
+							for (j = 0; j < box; j++) {
+								if (boxes[j].x == now_x && boxes[j].y == now_y - 1) {
+									boxes[j].y = boxes[j].y - 1;
+									now_y--;
+								}
+							}
 						}
 					}
 					else if (map[now_y - 1][now_x] == 0 || map[now_y - 1][now_x] == 2) {
@@ -123,6 +132,7 @@ int main() {
 				else if (c == 'a') { // a
 					if (is_box(now_y, now_x - 1, box)) {
 						if (map[now_y][now_x - 2] == 0) {
+							if (map[now_y][now_x - 1] == 2) k--;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x - 1 && boxes[j].y == now_y) {
 									boxes[j].x = boxes[j].x - 1;
@@ -131,7 +141,14 @@ int main() {
 							}
 						}
 						else if (map[now_y][now_x - 2] == 2) {
-							break;
+							k++;
+							if (k == end) break;
+							for (j = 0; j < box; j++) {
+								if (boxes[j].x == now_x - 1 && boxes[j].y == now_y) {
+									boxes[j].x = boxes[j].x - 1;
+									now_x--;
+								}
+							}
 						}
 					}
 					else if (map[now_y][now_x - 1] == 0 || map[now_y][now_x - 1] == 2) {
@@ -141,6 +158,7 @@ int main() {
 				else if (c == 's') { // s
 					if (is_box(now_y + 1, now_x, box)) {
 						if (map[now_y + 2][now_x] == 0) {
+							if (map[now_y + 1][now_x] == 2) k--;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x && boxes[j].y == now_y + 1) {
 									boxes[j].y = boxes[j].y + 1;
@@ -149,7 +167,14 @@ int main() {
 							}
 						}
 						else if (map[now_y + 2][now_x] == 2) {
-							break;
+							k++;
+							if (k == end) break;
+							for (j = 0; j < box; j++) {
+								if (boxes[j].x == now_x && boxes[j].y == now_y + 1) {
+									boxes[j].y = boxes[j].y + 1;
+									now_y++;
+								}
+							}
 						}
 					}
 					else if (map[now_y + 1][now_x] == 0 || map[now_y + 1][now_x] == 2) {
@@ -159,6 +184,7 @@ int main() {
 				else if (c == 'd') { // d
 					if (is_box(now_y, now_x + 1, box)) {
 						if (map[now_y][now_x + 2] == 0) {
+							if (map[now_y][now_x + 1] == 2) k--;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x + 1 && boxes[j].y == now_y) {
 									boxes[j].x = boxes[j].x + 1;
@@ -167,7 +193,14 @@ int main() {
 							}
 						}
 						else if (map[now_y][now_x + 2] == 2) {
-							break;
+							k++;
+							if (k == end) break;
+							for (j = 0; j < box; j++) {
+								if (boxes[j].x == now_x + 1 && boxes[j].y == now_y) {
+									boxes[j].x = boxes[j].x + 1;
+									now_x++;
+								}
+							}
 						}
 					}
 					else if (map[now_y][now_x + 1] == 0 || map[now_y][now_x + 1] == 2) {
@@ -176,6 +209,7 @@ int main() {
 				}
 				else if (c == 'r') {
 					x = init_map(map, i + 1, &m, &n, &now_x, &now_y, &box, &end);
+					k = 0;
 					if (x == -1) break;
 				}
 				system("cls");
