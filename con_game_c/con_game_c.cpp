@@ -6,7 +6,7 @@
 #include "string.h"
 #include "windows.h"
 #include "math.h"
-#define levels 2
+#define levels 5
 #define map_size 30
 FILE* f;
 
@@ -89,7 +89,7 @@ int main() {
 				c = _getch();
 				if (c == 'w') { // w
 					if (is_box(now_y - 1, now_x, box)) {
-						if (map[now_y - 2][now_x] == 0) {
+						if (map[now_y - 2][now_x] == 0 && !is_box(now_y - 2, now_x, box)) {
 							if (map[now_y - 1][now_x] == 2) k--;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x && boxes[j].y == now_y - 1) {
@@ -116,7 +116,7 @@ int main() {
 				}
 				else if (c == 'a') { // a
 					if (is_box(now_y, now_x - 1, box)) {
-						if (map[now_y][now_x - 2] == 0) {
+						if (map[now_y][now_x - 2] == 0 && !is_box(now_y, now_x - 2, box)) {
 							if (map[now_y][now_x - 1] == 2) k--;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x - 1 && boxes[j].y == now_y) {
@@ -143,7 +143,7 @@ int main() {
 				}
 				else if (c == 's') { // s
 					if (is_box(now_y + 1, now_x, box)) {
-						if (map[now_y + 2][now_x] == 0) {
+						if (map[now_y + 2][now_x] == 0 && !is_box(now_y + 2, now_x, box)) {
 							if (map[now_y + 1][now_x] == 2) k--;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x && boxes[j].y == now_y + 1) {
@@ -170,7 +170,7 @@ int main() {
 				}
 				else if (c == 'd') { // d
 					if (is_box(now_y, now_x + 1, box)) {
-						if (map[now_y][now_x + 2] == 0) {
+						if (map[now_y][now_x + 2] == 0 && !is_box(now_y, now_x - 2, box)) {
 							if (map[now_y][now_x + 1] == 2) k--;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x + 1 && boxes[j].y == now_y) {
