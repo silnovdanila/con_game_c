@@ -15,22 +15,6 @@ struct Object {
 	int y;
 } boxes[6];
 
-int dai_chislo(int a, int b) { // Функция ввода числа
-	int k, f = 1;
-	printf("Введите число от %d до %d: ", a, b);
-	do {
-		while (scanf("%d", &k) != 1) {
-			while (getchar() != '\n');
-			printf("Ошибка. Введите число от %d до %d: ", a, b);
-		}
-		if (k <= b && k >= a) f = 0;
-		else {
-			printf("Ошибка. Введите число от %d до %d: ", a, b);
-		}
-	} while (f);
-	while (getchar() != '\n');
-	return k;
-}
 int init_map(int map[map_size][map_size], int level_num, int* m, int* n, int* now_x, int* now_y, int *box, int *end) {
 	char fname[20] = "level", flevel[5], ch;
 	int i, j;
@@ -116,6 +100,7 @@ int main() {
 						}
 						else if (map[now_y - 2][now_x] == 2) {
 							k++;
+							if (map[now_y - 1][now_x] == 2) k--;
 							if (k == end) break;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x && boxes[j].y == now_y - 1) {
@@ -142,6 +127,7 @@ int main() {
 						}
 						else if (map[now_y][now_x - 2] == 2) {
 							k++;
+							if (map[now_y][now_x - 1] == 2) k--;
 							if (k == end) break;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x - 1 && boxes[j].y == now_y) {
@@ -168,6 +154,7 @@ int main() {
 						}
 						else if (map[now_y + 2][now_x] == 2) {
 							k++;
+							if (map[now_y + 1][now_x] == 2) k--;
 							if (k == end) break;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x && boxes[j].y == now_y + 1) {
@@ -194,6 +181,7 @@ int main() {
 						}
 						else if (map[now_y][now_x + 2] == 2) {
 							k++;
+							if (map[now_y][now_x + 1] == 2) k--;
 							if (k == end) break;
 							for (j = 0; j < box; j++) {
 								if (boxes[j].x == now_x + 1 && boxes[j].y == now_y) {
